@@ -59,11 +59,14 @@ jobs:
             ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-orders:latest
             ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-orders:${{ github.run_id }}
 
-      # Step 8: Push the Docker image to Docker Hub
-      - name: Push Docker image
-        uses: docker/build-push-action@v4
+      # Step 8: Deploy to EC2 and restart orders-deployment
+      - name: SSH to EC2 & Restart Deployment
+        uses: appleboy/ssh-action@v1.2.0
         with:
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-orders:latest
-            ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-orders:${{ github.run_id }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "Pulling latest image and restarting deployment..."
+            kubectl rollout restart deployment orders-deployment -n default
+            kubectl rollout status deployment orders-deployment -n default
