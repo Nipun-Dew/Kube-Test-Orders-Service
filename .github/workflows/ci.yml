@@ -1,4 +1,4 @@
-name: Analytics Service Build and Push
+name: Orders Service Build and Push
 
 on:
   push:
@@ -56,8 +56,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-analytics:latest
-            ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-analytics:${{ github.run_id }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-orders:latest
+            ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-orders:${{ github.run_id }}
 
       # Step 8: Push the Docker image to Docker Hub
       - name: Push Docker image
@@ -65,5 +65,5 @@ jobs:
         with:
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-analytics:latest
-            ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-analytics:${{ github.run_id }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-orders:latest
+            ${{ secrets.DOCKER_HUB_USERNAME }}/lugx-orders:${{ github.run_id }}
